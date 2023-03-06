@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 /**----Getting geolocation services------ */
 
-// Get user's IP address
 
 // Get user's IP address
 $.getJSON("https://ipgeolocation.abstractapi.com/v1/?api_key=07bb40776117498e923a103891ecf3d8", function(data) {
@@ -29,39 +28,14 @@ $.getJSON("https://ipgeolocation.abstractapi.com/v1/?api_key=07bb40776117498e923
 });
 
 // Get user's current location
-navigator.geolocation.getCurrentPosition(function(position) {
-  var userLatitude = position.coords.latitude;
-  var userLongitude = position.coords.longitude;
-  
-// Call the function to calculate distance for each hiring section
-function calculateDistance(userLatitude, userLongitude) {
-  var hiringSections = document.getElementsByClassName("hiring-section");
-
-  for (var i = 0; i < hiringSections.length; i++) {
-    var hiringLatitude = hiringSections[i].getAttribute("data-lat");
-    var hiringLongitude = hiringSections[i].getAttribute("data-lon");
-
-    var distance = haversine(userLatitude, userLongitude, hiringLatitude, hiringLongitude);
-
-    // If the hiring section is within 100 miles, add the "show" class to display it
-    if (distance <= 100) {
-      hiringSections[i].classList.add("show");
-    }
-    // Otherwise, add the "hide" class to hide it
-    else {
-      hiringSections[i].classList.add("hide");
-    }
-  }
-}
-
 // Function to calculate the distance between two coordinates using the Haversine formula
 function haversine(lat1, lon1, lat2, lon2) {
   var R = 3958.8; // Radius of the earth in miles
   var dLat = deg2rad(lat2 - lat1);
   var dLon = deg2rad(lon2 - lon1);
   var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-          Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var distance = R * c; // Distance in miles
   return distance;
@@ -72,16 +46,36 @@ function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
 
+// Call the function to calculate distance for each portfolio-item
+function calculateDistance(userLatitude, userLongitude, portfolioItems) {
+  for (var i = 0; i < portfolioItems.length; i++) {
+    var portfolioLatitude = portfolioItems[i].getAttribute("data-lat");
+    var portfolioLongitude = portfolioItems[i].getAttribute("data-lon");
+
+    var distance = haversine(userLatitude, userLongitude, portfolioLatitude, portfolioLongitude);
+
+    // If the portfolio-item is within 100 miles, add the "show" class to display it
+    if (distance <= 100) {
+      portfolioItems[i].classList.add("show");
+    }
+    // Otherwise, add the "hide" class to hide it
+    else {
+      portfolioItems[i].classList.add("hide");
+    }
+  }
+}
+
 // Get user's current location
 navigator.geolocation.getCurrentPosition(function(position) {
   var userLatitude = position.coords.latitude;
   var userLongitude = position.coords.longitude;
 
-  // Call the calculateDistance function with the user's coordinates
-  calculateDistance(userLatitude, userLongitude);
+  // Call the calculateDistance function with the portfolio-item elements
+  var portfolioItems = document.getElementsByClassName("portfolio-item");
+  calculateDistance(userLatitude, userLongitude, portfolioItems);
 }, function(error) {
   // Handle errors here
-  switch(error.code) {
+  switch (error.code) {
     case error.PERMISSION_DENIED:
       console.log("User denied the request for Geolocation.");
       break;
@@ -494,7 +488,4 @@ window.addEventListener('resize', setHiringSquareFontSize);
      }
      return cleaned;
    }
- 
-
-
  
