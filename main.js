@@ -28,7 +28,7 @@ fetch('https://api.abstractapi.com/v1/ip?api_key=07bb40776117498e923a103891ecf3d
     console.log('IP Address:', data.ip);
 
     // Get user's geolocation data
-    fetch(`https://ipgeolocation.abstractapi.com/v1/?api_key=YOUR_API_KEY&ip_address=${data.ip}`)
+    fetch(`https://ipgeolocation.abstractapi.com/v1/?api_key=07bb40776117498e923a103891ecf3d8&ip_address=${data.ip}`)
       .then(response => response.json())
       .then(data => {
         console.log('Geolocation Data:', data);
@@ -437,4 +437,6 @@ window.addEventListener('resize', setHiringSquareFontSize);
      }
      return cleaned;
    }
+ 
+
  
