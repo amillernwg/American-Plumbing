@@ -30,28 +30,32 @@ $.getJSON("https://ipgeolocation.abstractapi.com/v1/?api_key=07bb40776117498e923
 
 // Get user's current location
 navigator.geolocation.getCurrentPosition(function(position) {
-  var userLat = position.coords.latitude;
-  var userLon = position.coords.longitude;
+  var userLatitude = position.coords.latitude;
+  var userLongitude = position.coords.longitude;
+  
+// Call the function to calculate distance for each hiring section
+function calculateDistance(userLatitude, userLongitude) {
+  var hiringSections = document.getElementsByClassName("hiring-section");
 
-  // Loop through each item on the page
-  $('.portfolio-item').each(function() {
-    var itemLat = $(this).data('lat');
-    var itemLon = $(this).data('lon');
+  for (var i = 0; i < hiringSections.length; i++) {
+    var hiringLatitude = hiringSections[i].getAttribute("data-lat");
+    var hiringLongitude = hiringSections[i].getAttribute("data-lon");
 
-    // Calculate the distance between the user's location and the item's location
-    var distance = calcDistance(userLat, userLon, itemLat, itemLon);
+    var distance = haversine(userLatitude, userLongitude, hiringLatitude, hiringLongitude);
 
-    // If the distance is less than or equal to 100 miles, show the item
+    // If the hiring section is within 100 miles, add the "show" class to display it
     if (distance <= 100) {
-      $(this).show();
-    } else {
-      $(this).hide();
+      hiringSections[i].classList.add("show");
     }
-  });
-});
+    // Otherwise, add the "hide" class to hide it
+    else {
+      hiringSections[i].classList.add("hide");
+    }
+  }
+}
 
-// Function to calculate the distance between two coordinates
-function calcDistance(lat1, lon1, lat2, lon2) {
+// Function to calculate the distance between two coordinates using the Haversine formula
+function haversine(lat1, lon1, lat2, lon2) {
   var R = 3958.8; // Radius of the earth in miles
   var dLat = deg2rad(lat2 - lat1);
   var dLon = deg2rad(lon2 - lon1);
@@ -67,6 +71,32 @@ function calcDistance(lat1, lon1, lat2, lon2) {
 function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
+
+// Get user's current location
+navigator.geolocation.getCurrentPosition(function(position) {
+  var userLatitude = position.coords.latitude;
+  var userLongitude = position.coords.longitude;
+
+  // Call the calculateDistance function with the user's coordinates
+  calculateDistance(userLatitude, userLongitude);
+}, function(error) {
+  // Handle errors here
+  switch(error.code) {
+    case error.PERMISSION_DENIED:
+      console.log("User denied the request for Geolocation.");
+      break;
+    case error.POSITION_UNAVAILABLE:
+      console.log("Location information is unavailable.");
+      break;
+    case error.TIMEOUT:
+      console.log("The request to get user location timed out.");
+      break;
+    case error.UNKNOWN_ERROR:
+      console.log("An unknown error occurred.");
+      break;
+  }
+});
+
   /**-------------------------------------------------------------------------------------------------- */
 
   /**
