@@ -22,24 +22,51 @@ document.addEventListener('DOMContentLoaded', () => {
 /**----Getting geolocation services------ */
 
 // Get user's IP address
-fetch('https://api.abstractapi.com/v1/ip?api_key=07bb40776117498e923a103891ecf3d8')
-  .then(response => response.json())
-  .then(data => {
-    console.log('IP Address:', data.ip);
 
-    // Get user's geolocation data
-    fetch(`https://ipgeolocation.abstractapi.com/v1/?api_key=07bb40776117498e923a103891ecf3d8&ip_address=${data.ip}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log('Geolocation Data:', data);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  })
-  .catch(error => {
-    console.error('Error:', error);
+// Get user's IP address
+$.getJSON("https://ipgeolocation.abstractapi.com/v1/?api_key=07bb40776117498e923a103891ecf3d8", function(data) {
+  console.log(data);
+});
+
+// Get user's current location
+navigator.geolocation.getCurrentPosition(function(position) {
+  var userLat = position.coords.latitude;
+  var userLon = position.coords.longitude;
+
+  // Loop through each item on the page
+  $('.portfolio-item').each(function() {
+    var itemLat = $(this).data('lat');
+    var itemLon = $(this).data('lon');
+
+    // Calculate the distance between the user's location and the item's location
+    var distance = calcDistance(userLat, userLon, itemLat, itemLon);
+
+    // If the distance is less than or equal to 100 miles, show the item
+    if (distance <= 100) {
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
   });
+});
+
+// Function to calculate the distance between two coordinates
+function calcDistance(lat1, lon1, lat2, lon2) {
+  var R = 3958.8; // Radius of the earth in miles
+  var dLat = deg2rad(lat2 - lat1);
+  var dLon = deg2rad(lon2 - lon1);
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+          Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var distance = R * c; // Distance in miles
+  return distance;
+}
+
+// Function to convert degrees to radians
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
   /**-------------------------------------------------------------------------------------------------- */
 
   /**
@@ -438,5 +465,6 @@ window.addEventListener('resize', setHiringSquareFontSize);
      return cleaned;
    }
  
+
 
  
