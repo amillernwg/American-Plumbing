@@ -22,74 +22,55 @@ document.addEventListener('DOMContentLoaded', () => {
 /**----Getting geolocation services------ */
 
 
-// Get user's IP address
-$.getJSON("https://ipgeolocation.abstractapi.com/v1/?api_key=07bb40776117498e923a103891ecf3d8", function(data) {
-  console.log(data);
-});
+// Haversine library for distance calculation
+// https://github.com/njj/haversine
+const haversine = require('haversine');
 
-// Get user's current location
-// Function to calculate the distance between two coordinates using the Haversine formula
-function haversine(lat1, lon1, lat2, lon2) {
-  var R = 3958.8; // Radius of the earth in miles
-  var dLat = deg2rad(lat2 - lat1);
-  var dLon = deg2rad(lon2 - lon1);
-  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  var distance = R * c; // Distance in miles
-  return distance;
-}
-
-// Function to convert degrees to radians
-function deg2rad(deg) {
-  return deg * (Math.PI / 180);
-}
-
-// Call the function to calculate distance for each portfolio-item
-function calculateDistance(userLatitude, userLongitude, portfolioItems) {
-  for (var i = 0; i < portfolioItems.length; i++) {
-    var portfolioLatitude = portfolioItems[i].getAttribute("data-lat");
-    var portfolioLongitude = portfolioItems[i].getAttribute("data-lon");
-
-    var distance = haversine(userLatitude, userLongitude, portfolioLatitude, portfolioLongitude);
-
-    // If the portfolio-item is within 100 miles, add the "show" class to display it
-    if (distance <= 100) {
-      portfolioItems[i].classList.add("show");
-    }
-    // Otherwise, add the "hide" class to hide it
-    else {
-      portfolioItems[i].classList.add("hide");
-    }
+// Get the user's current location
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    console.log('Geolocation is not supported by this browser.');
   }
 }
 
-// Get user's current location
-navigator.geolocation.getCurrentPosition(function(position) {
-  var userLatitude = position.coords.latitude;
-  var userLongitude = position.coords.longitude;
+// Show the user's current position on the map
+function showPosition(position) {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+  const mapContainer = document.getElementById('map-container');
+  const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=10&size=400x400&sensor=false`;
+  mapContainer.innerHTML = `<img src="${mapUrl}" alt="Map of current location">`;
+  hidePortfolioItems(latitude, longitude);
+}
 
-  // Call the calculateDistance function with the portfolio-item elements
-  var portfolioItems = document.getElementsByClassName("portfolio-item");
-  calculateDistance(userLatitude, userLongitude, portfolioItems);
-}, function(error) {
-  // Handle errors here
-  switch (error.code) {
-    case error.PERMISSION_DENIED:
-      console.log("User denied the request for Geolocation.");
-      break;
-    case error.POSITION_UNAVAILABLE:
-      console.log("Location information is unavailable.");
-      break;
-    case error.TIMEOUT:
-      console.log("The request to get user location timed out.");
-      break;
-    case error.UNKNOWN_ERROR:
-      console.log("An unknown error occurred.");
-      break;
-  }
-});
+// Calculate the distance between two sets of coordinates using the Haversine formula
+function getDistance(lat1, lon1, lat2, lon2) {
+  const from = { latitude: lat1, longitude: lon1 };
+  const to = { latitude: lat2, longitude: lon2 };
+  return haversine(from, to, { unit: 'mile' });
+}
+
+// Hide portfolio items that are more than 100 miles away
+function hidePortfolioItems(latitude, longitude) {
+  const portfolioItems = document.querySelectorAll('.portfolio-item');
+  portfolioItems.forEach((item) => {
+    const itemLatitude = parseFloat(item.dataset.latitude);
+    const itemLongitude = parseFloat(item.dataset.longitude);
+    const distance = getDistance(latitude, longitude, itemLatitude, itemLongitude);
+    if (distance > 100) {
+      item.classList.add('hidden');
+    } else {
+      item.classList.remove('hidden');
+    }
+  });
+}
+
+// Event listener for the "Get Location" button
+const getLocationButton = document.getElementById('get-location-button');
+getLocationButton.addEventListener('click', getLocation);
+
 
   /**-------------------------------------------------------------------------------------------------- */
 
@@ -488,4 +469,3 @@ window.addEventListener('resize', setHiringSquareFontSize);
      }
      return cleaned;
    }
- 
