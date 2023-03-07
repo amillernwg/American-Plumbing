@@ -20,57 +20,50 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 /**----Getting geolocation services------ */
-
-
-// Haversine library for distance calculation
-const haversine = require('haversine');
-
-// Get the user's current location
-function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition);
-  } else {
-    console.log('Geolocation is not supported by this browser.');
-  }
-}
-
-// Show the user's current position on the map
-function showPosition(position) {
-  const latitude = position.coords.latitude;
-  const longitude = position.coords.longitude;
-  const mapContainer = document.getElementById('map-container');
-  const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=10&size=400x400&sensor=false`;
-  mapContainer.innerHTML = `<img src="${mapUrl}" alt="Map of current location">`;
-  hidePortfolioItems(latitude, longitude);
-}
-
-// Calculate the distance between two sets of coordinates using the Haversine formula
-function getDistance(lat1, lon1, lat2, lon2) {
-  const from = { latitude: lat1, longitude: lon1 };
-  const to = { latitude: lat2, longitude: lon2 };
-  return haversine(from, to, { unit: 'mile' });
-}
-
-// Hide portfolio items that are more than 100 miles away
-function hidePortfolioItems(latitude, longitude) {
-  const portfolioItems = document.querySelectorAll('.portfolio-item');
-  portfolioItems.forEach((item) => {
-    const itemLatitude = parseFloat(item.dataset.latitude);
-    const itemLongitude = parseFloat(item.dataset.longitude);
-    const distance = getDistance(latitude, longitude, itemLatitude, itemLongitude);
-    if (distance > 100) {
-      item.classList.add('hidden');
-    } else {
-      item.classList.remove('hidden');
-    }
+// Function to retrieve the user's IP address
+function getIPAddress() {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://api.ipify.org?format=json');
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const response = JSON.parse(xhr.responseText);
+        resolve(response.ip);
+      } else {
+        reject('Unable to retrieve IP address.');
+      }
+    };
+    xhr.onerror = () => {
+      reject('Unable to retrieve IP address.');
+    };
+    xhr.send();
   });
 }
 
-// Event listener for the "Get Location" button
-const getLocationButton = document.getElementById('get-location-button');
-getLocationButton.addEventListener('click', getLocation);
+// Function to geolocate the user's IP address using the Abstract API
+function geolocateIP(ipAddress, apiKey) {
+  return fetch(`https://ipgeolocation.abstractapi.com/v1/?api_key=${apiKey}&ip_address=${ipAddress}`)
+    .then(response => response.json())
+    .then(data => {
+      // Handle the response data
+      console.log(data);
+    })
+    .catch(error => {
+      // Handle any errors that occur
+      console.error(error);
+    });
+}
 
-
+// Call the functions when the page loads
+window.onload = async () => {
+  try {
+    const ipAddress = await getIPAddress();
+    const apiKey = "07bb40776117498e923a103891ecf3d8";
+    await geolocateIP(ipAddress, apiKey);
+  } catch (error) {
+    console.error(error);
+  }
+};
   /**-------------------------------------------------------------------------------------------------- */
 
   /**
