@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Haversine library for distance calculation
-// https://github.com/njj/haversine
 const haversine = require('haversine');
 
 // Get the user's current location
