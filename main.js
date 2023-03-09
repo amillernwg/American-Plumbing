@@ -12,123 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
-   * Mobile nav toggle
-   */
-
-  const mobileNavShow = document.querySelector('.mobile-nav-show');
-  const mobileNavHide = document.querySelector('.mobile-nav-hide');
-
-  document.querySelectorAll('.mobile-nav-toggle').forEach(el => {
-    el.addEventListener('click', function(event) {
-      event.preventDefault();
-      mobileNavToogle();
-    })
-  });
-
-  function mobileNavToogle() {
-    document.querySelector('body').classList.toggle('mobile-nav-active');
-    mobileNavShow.classList.toggle('d-none');
-    mobileNavHide.classList.toggle('d-none');
-  }
-
-  /**
-   * Hide mobile nav on same-page/hash links
-   */
-  document.querySelectorAll('#navbar a').forEach(navbarlink => {
-
-    if (!navbarlink.hash) return;
-
-    let section = document.querySelector(navbarlink.hash);
-    if (!section) return;
-
-    navbarlink.addEventListener('click', () => {
-      if (document.querySelector('.mobile-nav-active')) {
-        mobileNavToogle();
-      }
-    });
-
-  });
-
-  /**
-   * Toggle mobile nav dropdowns
-   */
-  const navDropdowns = document.querySelectorAll('.navbar .dropdown > a');
-
-  navDropdowns.forEach(el => {
-    el.addEventListener('click', function(event) {
-      if (document.querySelector('.mobile-nav-active')) {
-        event.preventDefault();
-        this.classList.toggle('active');
-        this.nextElementSibling.classList.toggle('dropdown-active');
-
-        let dropDownIndicator = this.querySelector('.dropdown-indicator');
-        dropDownIndicator.classList.toggle('bi-chevron-up');
-        dropDownIndicator.classList.toggle('bi-chevron-down');
-      }
-    })
-  });
-
-  /**
-   * Scroll top button
-   */
-  const scrollTop = document.querySelector('.scroll-top');
-  if (scrollTop) {
-    const togglescrollTop = function() {
-      window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
-    }
-    window.addEventListener('load', togglescrollTop);
-    document.addEventListener('scroll', togglescrollTop);
-    scrollTop.addEventListener('click', window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    }));
-  }
-
-  /**
-   * Initiate glightbox
-   */
-  const glightbox = GLightbox({
-    selector: '.glightbox'
-  });
-
-  /**
-   * Porfolio isotope and filter
-   */
-  let portfolionIsotope = document.querySelector('.portfolio-isotope');
-
-  if (portfolionIsotope) {
-
-    let portfolioFilter = portfolionIsotope.getAttribute('data-portfolio-filter') ? portfolionIsotope.getAttribute('data-portfolio-filter') : '*';
-    let portfolioLayout = portfolionIsotope.getAttribute('data-portfolio-layout') ? portfolionIsotope.getAttribute('data-portfolio-layout') : 'masonry';
-    let portfolioSort = portfolionIsotope.getAttribute('data-portfolio-sort') ? portfolionIsotope.getAttribute('data-portfolio-sort') : 'original-order';
-
-    window.addEventListener('load', () => {
-      let portfolioIsotope = new Isotope(document.querySelector('.portfolio-container'), {
-        itemSelector: '.portfolio-item',
-        layoutMode: portfolioLayout,
-        filter: portfolioFilter,
-        sortBy: portfolioSort
-      });
-
-      let menuFilters = document.querySelectorAll('.portfolio-isotope .portfolio-flters li');
-      menuFilters.forEach(function(el) {
-        el.addEventListener('click', function() {
-          document.querySelector('.portfolio-isotope .portfolio-flters .filter-active').classList.remove('filter-active');
-          this.classList.add('filter-active');
-          portfolioIsotope.arrange({
-            filter: this.getAttribute('data-filter')
-          });
-          if (typeof aos_init === 'function') {
-            aos_init();
-          }
-        }, false);
-      });
-
-    });
-
-  }
-
-  /**
    * Init swiper slider with 1 slide at once in desktop view
    */
   new Swiper('.slides-1', {
@@ -184,10 +67,70 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /**
-   * Initiate pURE cOUNTER
+   * Mobile nav toggle
    */
-  new PureCounter();
 
+  const mobileNavShow = document.querySelector('.mobile-nav-show');
+  const mobileNavHide = document.querySelector('.mobile-nav-hide');
+
+  document.querySelectorAll('.mobile-nav-toggle').forEach(el => {
+    el.addEventListener('click', function(event) {
+      event.preventDefault();
+      mobileNavToogle();
+    })
+  });
+
+  function mobileNavToogle() {
+    document.querySelector('body').classList.toggle('mobile-nav-active');
+    mobileNavShow.classList.toggle('d-none');
+    mobileNavHide.classList.toggle('d-none');
+  }
+
+  /**
+   * Hide mobile nav on same-page/hash links
+   */
+  document.querySelectorAll('#navbar a').forEach(navbarlink => {
+
+    if (!navbarlink.hash) return;
+
+    let section = document.querySelector(navbarlink.hash);
+    if (!section) return;
+
+    navbarlink.addEventListener('click', () => {
+      if (document.querySelector('.mobile-nav-active')) {
+        mobileNavToogle();
+      }
+    });
+
+  });
+ /**
+ * Scroll top button
+ */
+ const scrollTop = document.querySelector('.scroll-top');
+ if (scrollTop) {
+   const togglescrollTop = function() {
+     window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
+   }
+   window.addEventListener('load', togglescrollTop);
+   document.addEventListener('scroll', togglescrollTop);
+   scrollTop.addEventListener('click', window.scrollTo({
+     top: 0,
+     behavior: 'smooth'
+   }));
+ }
+
+ /**
+  * Initiate glightbox
+  */
+ const glightbox = GLightbox({
+   selector: '.glightbox'
+ });
+
+/**
+ * Initiate pURE cOUNTER
+ */
+new PureCounter();
+  
   /**
    * Animation on scroll function and init
    */
@@ -205,8 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
  /**
-   sizing for carasel wording inside and the hiring square
-   */
+ sizing for carasel wording inside and the hiring square
+ */
 
 // Constants for font sizing
 const carouselMinFontSize = 16;
@@ -225,66 +168,66 @@ const hiringSquareMinScreenWidth = 320;
 const hiringSquareMaxScreenWidth = 1200;
 
 function setCarouselFontSize() {
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-  const fontSize = Math.max(
-    carouselMinFontSize,
-    Math.min(
-      carouselMaxFontSize,
-      Math.floor(
-        ((screenWidth + screenHeight) / 2 - carouselMinScreenWidth) /
-          (carouselMaxScreenWidth - carouselMinScreenWidth) *
-          (carouselMaxFontSize - carouselMinFontSize) +
-          carouselMinFontSize
-      )
+const screenWidth = window.innerWidth;
+const screenHeight = window.innerHeight;
+const fontSize = Math.max(
+  carouselMinFontSize,
+  Math.min(
+    carouselMaxFontSize,
+    Math.floor(
+      ((screenWidth + screenHeight) / 2 - carouselMinScreenWidth) /
+        (carouselMaxScreenWidth - carouselMinScreenWidth) *
+        (carouselMaxFontSize - carouselMinFontSize) +
+        carouselMinFontSize
     )
-  );
-  const heading = document.querySelector('h2');
-  const paragraph = document.querySelector('p');
-  heading.style.fontSize = `${fontSize}px`;
-  paragraph.style.fontSize = `${fontSize / 2}px`;
+  )
+);
+const heading = document.querySelector('h2');
+const paragraph = document.querySelector('p');
+heading.style.fontSize = `${fontSize}px`;
+paragraph.style.fontSize = `${fontSize / 2}px`;
 }
 
 function setBottomAreaFontSize() {
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-  const fontSize = Math.max(
-    bottomAreaMinFontSize,
-    Math.min(
-      bottomAreaMaxFontSize,
-      Math.floor(
-        ((screenWidth + screenHeight) / 2 - bottomAreaMinScreenWidth) /
-          (bottomAreaMaxScreenWidth - bottomAreaMinScreenWidth) *
-          (bottomAreaMaxFontSize - bottomAreaMinFontSize) +
-          bottomAreaMinFontSize
-      )
+const screenWidth = window.innerWidth;
+const screenHeight = window.innerHeight;
+const fontSize = Math.max(
+  bottomAreaMinFontSize,
+  Math.min(
+    bottomAreaMaxFontSize,
+    Math.floor(
+      ((screenWidth + screenHeight) / 2 - bottomAreaMinScreenWidth) /
+        (bottomAreaMaxScreenWidth - bottomAreaMinScreenWidth) *
+        (bottomAreaMaxFontSize - bottomAreaMinFontSize) +
+        bottomAreaMinFontSize
     )
-  );
-  const bottomAreas = document.querySelectorAll('.bottom-area');
-  bottomAreas.forEach(area => {
-    area.style.fontSize = `${fontSize}px`;
-    area.querySelector('span').style.fontSize = `${fontSize}px`;
-    area.querySelector('p').style.fontSize = `${fontSize / 2}px`;
-  });
+  )
+);
+const bottomAreas = document.querySelectorAll('.bottom-area');
+bottomAreas.forEach(area => {
+  area.style.fontSize = `${fontSize}px`;
+  area.querySelector('span').style.fontSize = `${fontSize}px`;
+  area.querySelector('p').style.fontSize = `${fontSize / 2}px`;
+});
 }
 
 function setHiringSquareFontSize() {
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-  const fontSize = Math.max(
-    hiringSquareMinFontSize,
-    Math.min(
-      hiringSquareMaxFontSize,
-      Math.floor(
-        ((screenWidth + screenHeight) / 2 - hiringSquareMinScreenWidth) /
-          (hiringSquareMaxScreenWidth - hiringSquareMinScreenWidth) *
-          (hiringSquareMaxFontSize - hiringSquareMinFontSize) +
-          hiringSquareMinFontSize
-      )
+const screenWidth = window.innerWidth;
+const screenHeight = window.innerHeight;
+const fontSize = Math.max(
+  hiringSquareMinFontSize,
+  Math.min(
+    hiringSquareMaxFontSize,
+    Math.floor(
+      ((screenWidth + screenHeight) / 2 - hiringSquareMinScreenWidth) /
+        (hiringSquareMaxScreenWidth - hiringSquareMinScreenWidth) *
+        (hiringSquareMaxFontSize - hiringSquareMinFontSize) +
+        hiringSquareMinFontSize
     )
-  );
-  const hiringSquare = document.querySelector('#hiring-square');
-  hiringSquare.style.fontSize = `${fontSize / 1.5}px`;
+  )
+);
+const hiringSquare = document.querySelector('#hiring-square');
+hiringSquare.style.fontSize = `${fontSize / 1.5}px`;
 }
 
 setCarouselFontSize();
@@ -293,22 +236,24 @@ setHiringSquareFontSize();
 window.addEventListener('resize', setCarouselFontSize);
 window.addEventListener('resize', setBottomAreaFontSize);
 window.addEventListener('resize', setHiringSquareFontSize);
+
 /**
-   format the service request phone number
-   */
-   const phoneInput = document.getElementById('service-phone');
-   phoneInput.addEventListener('input', () => {
-     const phoneNumber = phoneInput.value;
-     phoneInput.value = formatPhoneNumber(phoneNumber);
-   });
- 
-   function formatPhoneNumber(phoneNumber) {
-     const cleaned = ('' + phoneNumber).replace(/\D/g, '');
-     const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
-     if (match) {
-       const firstGroup = match[1] ? '(' + match[1] + ') ' : '';
-       const secondGroup = match[2] ? match[2] + '-' : '';
-       return firstGroup + secondGroup + match[3];
-     }
-     return cleaned;
+ format the service request phone number
+ */
+ const phoneInput = document.getElementById('service-phone');
+ phoneInput.addEventListener('input', () => {
+   const phoneNumber = phoneInput.value;
+   phoneInput.value = formatPhoneNumber(phoneNumber);
+ });
+
+ function formatPhoneNumber(phoneNumber) {
+   const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+   const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
+   if (match) {
+     const firstGroup = match[1] ? '(' + match[1] + ') ' : '';
+     const secondGroup = match[2] ? match[2] + '-' : '';
+     return firstGroup + secondGroup + match[3];
    }
+   return cleaned;
+ }
+ 
