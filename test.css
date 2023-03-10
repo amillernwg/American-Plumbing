@@ -2340,3 +2340,6 @@ section {
   color: var(--color-primary);
 }
 
+.hidden {
+  display: none;
+}
