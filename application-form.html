@@ -29,7 +29,6 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script type="text/javascript" src="assets/js/geolocation.js"></script>
   
   
   
@@ -69,93 +68,79 @@
   
   <main id="main">
 
-    <!-- ======= Services Section ======= -->
-    <section id="services" class="services section-bg">
-      <div class="container" data-aos="fade-up">
-
-        <div class="section-header">
-          <h2>Innovative Equipment</h2>
-          <p>American Plumbing prides itself on keeping up with new technology to help eliminate costly mistakes. </p>
+    <!-- ======= Application Section ======= -->
+    <section id="application" class="application section-bg">
+        <div class="application-container" data-aos="fade-up">
+            <div class="section-header">
+                <h2>Application Form</h2>
+                <p>Start Your Application</p>
+              </div>
+              <form id="myForm" action="#" method="POST">
+                <div class="progress-container">
+                  <div class="progress" id="progress"></div>
+                  <div class="circle active">1</div>
+                  <div class="circle">2</div>
+                  <div class="circle">3</div>
+                  <div class="circle">4</div>
+                </div>
+        
+                <div id="step1" class="step">
+                  <h2>Start Your Application: </h2>
+                  <p>Estimated completion time: 8-10 minutes.</p>
+          <p>Thank you for your interest in working at The Home Depot. We get to work with the most unique, caring and fun people imaginable. They are the thread that ties us together. They are the Fabric of The Home Depot. In order to become part of our family of associates, please complete the following application and assessment.</p>
+          <p>If you require a reasonable accommodation to complete the application process, please send an email including the specific accommodation requested and The Home Depot store location(s) (city, state) to which you would like to apply to disabilityHD@homedepot.com.</p>
+          <p>THIS APPLICATION DOES NOT CREATE A CONTRACT OF EMPLOYMENT NOR DOES IT GUARANTEE EMPLOYMENT WITH THE HOME DEPOT OR ANY OF ITS AFFILIATES.</p>
+          <p>Let's get started</p>
+                </div>
+        
+                <div id="step2" class="step">
+                  <h2>Step 2: Progress</h2>
+                  <p>Step 2 content goes here...</p>
+                  <div class="question">
+                    <label for="q1">Name:</label>
+                    <input type="text" id="q1" name="q1" required />
+                  </div>
+                  <div class="question">
+                    <label for="q2">Street Address:</label>
+                    <input type="text" id="q2" name="q2" required />
+                  </div>
+                  <div class="question">
+                    <label for="q3">City:</label>
+                    <input type="text" id="q3" name="q3" required />
+                  </div>
+                  <div class="question">
+                    <label for="q4">State:</label>
+                    <input type="text" id="q4" name="q4" required />
+                  </div>
+                  <div class="question">
+                    <label for="q5">Zip:</label>
+                    <input type="text" id="q5" name="q5" required />
+                  </div>
+                  <div class="question">
+                    <label for="q6">Email Address:</label>
+                    <input type="text" id="q6" name="q6" required />
+                  </div>
+                  <div class="question">
+                    <label for="q7">Cell Number:</label>
+                    <input type="text" id="q7" name="q7" required />
+                  </div>
+                </div>
+        
+                <div id="step3" class="step">
+                  <h2>Step 3: Progress</h2>
+                  <p>Step 3 content goes here...</p>
+                </div>
+        
+                <div id="step4" class="step">
+                  <h2>Step 4: Progress</h2>
+                  <p>Step 4 content goes here...</p>
+                </div>
+        
+                <button class="btn" id="prev" disabled>Prev</button>
+                <button class="btn" id="next">Next</button>
+              </form>
         </div>
-
-        <div class="row gy-4">
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="service-item  position-relative">
-              <div class="icon">
-                <img src="assets/img//leak-detection.png" alt="Your Image">
-              </div>
-              <h3>Leak Detection</h3>
-              <p>Providing  the ability to pinpoint any water leak in the ground or walls for accurate repairs without the guesswork.</p>
-              <a href="leak-detection.html"class="readmore stretched-link">Learn more <i
-                  class="bi bi-arrow-right"></i></a>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="service-item position-relative">
-              <div class="icon">
-                <img src="assets/img//jetter.jpeg" alt="Your Image">
-              </div>
-              <h3>Jetting Equipment</h3>
-              <p>Hard to remove sewer blockages are a thing of the past with pressurized jetting.</p>
-              <a href="jetter.html" class="readmore stretched-link">Learn more <i
-                  class="bi bi-arrow-right"></i></a>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="service-item position-relative">
-              <div class="icon">
-                <img src="assets/img//smoke-protection.jpeg" alt="Your Image">
-              </div>
-              <h3>Smoke Dection Equipment</h3>
-              <p>Invasive sewer smells are easily pinpointed using harmless pressurized smoke. </p>
-              <a href="smoke-detection.html" class="readmore stretched-link">Learn more <i
-                  class="bi bi-arrow-right"></i></a>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-            <div class="service-item position-relative">
-              <div class="icon">
-                <img src="assets/img/confined-space.jpeg" alt="Your Image">
-              </div>
-              <h3>Confined Space/Fresh Air System</h3>
-              <p>Safety first as we service your sewage lift stations or any confined space.</p>
-              <a href="confined-space.html" class="readmore stretched-link">Learn more <i
-                  class="bi bi-arrow-right"></i></a>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
-            <div class="service-item position-relative">
-              <div class="icon">
-                <img src="assets/img/portable-trailer.png" alt="Your Image">
-              </div>
-              <h3>Portable Restrooms</h3>
-              <p>State of the art portable restrooms provide immediate relief to your customers. Clean, air conditioned, multi stall units, scalable to meet your demand.</p>
-              <a href="portable-restroom.html" class="readmore stretched-link">Learn more <i
-                  class="bi bi-arrow-right"></i></a>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
-            <div class="service-item position-relative">
-              <div class="icon">
-                <img src="assets/img/sewer-cam.jpeg" alt="Your Image">
-              </div>
-              <h3>Fiber Optic Camera</h3>
-              <p>Visually spotting problem areas in your drain lines remove the costly return trips</p>
-              <a href="sewer-camera.html" class="readmore stretched-link">Learn more <i
-                  class="bi bi-arrow-right"></i></a>
-            </div>
-          </div><!-- End Service Item -->
-
-        </div>
-
-      </div>
-    </section><!-- End Services Section -->
+    </section><!-- End Application Section -->
 
     
 
@@ -249,6 +234,7 @@
   <!-- Template Main JS File -->
   
   <script src="assets/js/main.js"></script>
+  
 
 </body>
 
