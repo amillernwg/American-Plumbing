@@ -806,16 +806,7 @@ section {
   cursor: pointer;
   margin-right: 10px;
 }
- 
-#get-started {
-  background-color: #afaeae;
-  color: green;
-  padding: 10px 30px ;
-  border-radius: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  
-}
+
 #prev {
   background-color: #afaeae;
   color: red;
@@ -840,6 +831,7 @@ section {
   border-radius: 8px;
   border-radius: 8px;
   cursor: pointer;
+  display: none;
 }
 
 .button-wrapper {
@@ -852,7 +844,7 @@ section {
 
 .button-wrapper button {
   float: left;
-  margin-right: 10px; 
+  margin-right: 10px; /* to add some space between the buttons */
 }
 
 .mso {
@@ -864,7 +856,7 @@ section {
   margin-top: 20px;
 }
 
-input.required {
+input.error {
   border: 1px solid red;
 }
 
